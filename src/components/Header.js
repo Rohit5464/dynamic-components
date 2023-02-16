@@ -1,53 +1,89 @@
-import React, { useEffect,useState } from 'react'
-import {Router , Route} from 'react-router-dom';
-import api from '../api/api';
-import {
-  MDBNavbar,
-  MDBContainer,
-  MDBBreadcrumb,
-  MDBBreadcrumbItem
-} from 'mdb-react-ui-kit';
+import React, { useState } from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import { AppBar, Toolbar, Typography } from "@material-ui/core";
+import { Link } from "react-router-dom";
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  title: {
+    flexGrow: 1,
+  },
+  active: {
+    fontWeight: "bold",
+    color: "black", // Custom style for the active link
+  },
+}));
 
 const Header = (props) => {
-   
-    console.log(props.headerList)
+  const classes = useStyles();
 
+  const { logo = "", headerlist = [] } = props.headerObject;
 
-    
+  console.log(headerlist);
+  // console.log(props.headerObject)
+  console.log(logo);
+  // const activePage = '/';
+
   return (
-    <div>
-    <MDBNavbar expand='lg' light bgColor='light'>
-      <MDBContainer fluid>
-        <nav aria-label='breadcrumb' className='ml-auto'>
-          <MDBBreadcrumb>
-           
-            {props.headerList.map((headerData)=>{
-                return <MDBBreadcrumbItem>
-                <a href={headerData.url} key={headerData.id}>{headerData.title}</a>
-              </MDBBreadcrumbItem>
-            })}
-           
-          </MDBBreadcrumb>
-        </nav>
-      </MDBContainer>
-    </MDBNavbar>
-   
- 
-    
-
-
-
-    {/* <ul>
-       {headerList.map((data) =>{
-        return <li >{}</li>
-       })}
-    </ul> */}
-
-
-
+    <div className={classes.root}>
+      <AppBar position="static" color="secondary">
+        <Toolbar>
+          <Typography variant="h6" className={classes.title}>
+            <img src={logo} style={{ width: "50px" }} alt="" />
+          </Typography>
+          {headerlist.map((headerData) => {
+            return (
+              <div style={{ padding: "10px" }}>
+                <Typography
+                  variant="h6"
+                  onClick={() => props.clickHandler(headerData.url)}
+                  color="inherit"
+                  component={Link}
+                  to={headerData.url}
+                  className={
+                    props.activePage === headerData.url ? classes.active : null
+                  }
+                >
+                  {headerData.title}
+                </Typography>
+              </div>
+            );
+          })}
+        </Toolbar>
+      </AppBar>
     </div>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;
+
+{
+  /* <div>
+<MDBNavbar expand='lg' light bgColor='light'>
+  <MDBContainer fluid>
+    <nav aria-label='breadcrumb' className='ml-auto'>
+      <MDBBreadcrumb>
+       
+        {props.headerList.map((headerData)=>{
+            return <MDBBreadcrumbItem className={activePage===headerData.url ? 'active' : null}>
+            <a href={headerData.url} key={headerData.id}>{headerData.title}</a>
+          </MDBBreadcrumbItem>
+        })}
+       
+      </MDBBreadcrumb>
+    </nav>
+  </MDBContainer>
+</MDBNavbar>
+
+
+
+
+
+
+
+
+
+</div> */
+}
