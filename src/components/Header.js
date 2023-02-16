@@ -51,6 +51,11 @@ const Header = (props) => {
               </div>
             );
           })}
+          <Link to="/add-data"><button style={{
+            backgroundColor:"white",
+            borderRadius:"10px",
+            padding:"10px 30px",
+          }}>Add</button></Link>
         </Toolbar>
       </AppBar>
     </div>
