@@ -7,6 +7,8 @@ import Body from "./components/Body";
 import Footer from "./components/Footer";
 import SideBar from "./components/SideBar";
 import { Container, Row, Col } from 'react-bootstrap';
+import AddElement from "./components/AddElement";
+import {v4 as uuidv4} from 'uuid';
 
 function App() {
 //   const headerObject = {
@@ -37,7 +39,7 @@ function App() {
   const [headerObject, setHeaderObject] = useState({});
   const [footerObject, setFooterObject] = useState({});
   const [sideMenu, setSideMenu] = useState({});
-  const [activePage,setActivePage] = useState("")
+  const [activePage,setActivePage] = useState("/")
 
 
   const headerData = async () => {
@@ -57,6 +59,23 @@ function App() {
 
   function clickHandler (url){
 setActivePage(url)
+  }
+
+  const addHandler =async(data) => {
+    const request = {
+      ...headerObject,
+      headerlist:[
+        ...(headerObject.headerlist),
+        {
+          id:uuidv4(),
+          ...data
+        }
+        
+      ]
+       
+      }
+      const response = await api.post("/headers",request);
+      console.log(response.data);
   }
 
   
@@ -93,7 +112,7 @@ setActivePage(url)
        <Row>
         <Col style={{padding:"0"}} xs={12} id="header">
           {/* Your header content goes here */}
-         <Header headerObject={headerObject} clickHandler={clickHandler} activePage={activePage} className="header" />
+         <Header headerObject={headerObject} clickHandler={clickHandler}  activePage={activePage} className="header" />
         </Col>
       </Row>
       <Row>
@@ -120,6 +139,7 @@ setActivePage(url)
                 ></Route>
               );
             })}
+            <Route path="add-data" element={<AddElement addHandler={addHandler}/>}/>
           </Routes>
         </Col>
       </Row>
